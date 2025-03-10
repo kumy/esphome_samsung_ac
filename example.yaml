@@ -1,0 +1,75 @@
+
+# Enable logging
+logger:
+  level: Verbose
+  logs:
+    esp-idf: INFO
+    text_sensor: INFO
+    json: INFO
+    wifi: INFO
+
+esphome:
+  name: "climate-living-room"
+
+esp32:
+  board: esp32-c3-devkitm-1
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+
+external_components:
+  - source: 
+      type: git
+      url: https://github.com/kumy/esphome_samsung_ac
+    components: [samsung_ac]
+
+uart:
+  id: uart_bus
+  tx_pin: 3
+  rx_pin: 2
+  baud_rate: 9600
+
+climate:
+  - platform: samsung_ac
+    name: living-room
+    id: living_room
+    uart_id: uart_bus
+    outdoor_temp:
+      name: Outdoor Temp
+    runtime_hours_sensor:
+      name: Runtime hours
+    filtertime_hours_sensor:
+      name: Filtertime hours
+    used_power_sensor:
+      name: Used power
+    reset_used_power_button:
+      name: Reset used power
+    co_mode:
+      name: "Co mode"
+      modes:
+        - "Off"
+        - "TurboMode"
+        - "Smart"
+        - "Sleep" 
+        - "Quiet" 
+        - "SoftCool"
+        - "WindMode1" 
+        - "WindMode2"
+        - "WindMode3"
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret ha_enc_key
+
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "A Fallback Hotspot"
+    password: "xxxxxxxxxxx"

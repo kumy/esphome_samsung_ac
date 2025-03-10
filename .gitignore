@@ -1,0 +1,7 @@
+.history
+__pycache__
+.idea/
+.pio/
+.platformio/
+.vscode/
+.mypy_cache/

@@ -1,0 +1,100 @@
+```
+### This is a basic esphome firmware definition for the sole purpose
+### of demonstrating the Samsung Ac external component.
+
+esphome:
+  name: dynamicron
+  friendly_name: Samsung Ac Climate
+
+esp32:
+  board: esp32doit-devkit-v1
+  framework:
+    type: arduino
+
+# Enables logging
+logger:
+
+# Enables Home Assistant API
+# api:
+#   reboot_timeout: 0s # Never reboots due to home-assistant connection.
+#   encryption:
+#     key: !secret api_encryption_key
+
+### Over-the-air updates
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  reboot_timeout: 0s # Never reboots due to wifi connection.
+
+  # Enables fallback hotspot (captive portal, if that's enabled) in case wifi connection fails
+  ap:
+    ssid: "foobar"
+    password: !secret wifi_password
+    ap_timeout: 10s # Enables access-point ssid if can't connect to wifi ssid.
+
+web_server:
+  version: 3
+  port: 80
+  local: true
+
+# Enables wifi-setup and flashing interface if we fallback to ap mode (see ap:).
+captive_portal:
+
+# We need 'time' for any scheduler to work properly.
+time:
+  #- platform: homeassistant
+  - platform: sntp
+    servers:
+      - 0.pool.ntp.org
+      - 1.pool.ntp.org
+      - 2.pool.ntp.org
+    id: esp_time
+
+
+### EXTERNAL COMPONENTS
+
+external_components:
+  - source:
+      type: local
+      path: /home/kumy/GIT/esphome_samsung_ac/components
+
+uart:
+  id: uart_bus
+  tx_pin: 3
+  rx_pin: 2
+  baud_rate: 9600
+
+climate:
+  - platform: samsung_ac
+    name: living-room
+    id: living_room
+    uart_id: uart_bus
+    outdoor_temp:
+      name: Outdoor Temp
+    runtime_hours_sensor:
+      name: Runtime hours
+    filtertime_hours_sensor:
+      name: Filtertime hours
+    used_power_sensor:
+      name: Used power
+    reset_used_power_button:
+      name: Reset used power
+    co_mode:
+      name: "Co mode"
+      modes:
+        - "Off"
+        - "TurboMode"
+        - "Smart"
+        - "Sleep" 
+        - "Quiet" 
+        - "SoftCool"
+        - "WindMode1" 
+        - "WindMode2"
+        - "WindMode3"
+
+
+```

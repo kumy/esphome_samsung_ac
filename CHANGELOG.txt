@@ -1,0 +1,22 @@
+***
+April 4th, 2023
+
+* fixed fan Quiet mode for ESPHome 2023.3.0
+* Note:
+    - users with ESPHome 2023.3.0+ should use branch master
+        url: https://github.com/pedobry/esphome_toshiba_suzumi
+    - users with ESPHome 2023.2.x and older should use this url:
+        url: https://github.com/pedobry/esphome_toshiba_suzumi@2023.2.0
+
+APRIL 1st, 2023
+
+* updated examples to filter outside temp value 127
+* added an optional button to scan for unsupported sensors
+* tested on ESP8266 - Lolin D1 mini
+
+
+ORIGINAL RELEASE (Dec 2022)
+
+* initial release
+
+***
